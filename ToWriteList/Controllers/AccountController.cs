@@ -3,9 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ToWriteList.Context;
@@ -30,7 +28,7 @@ namespace ToWriteList.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]   
+        [ValidateAntiForgeryToken]
         [Route("Account/Register")]
         public async Task<IActionResult> Register(RegisterModel model)
         {
@@ -72,7 +70,7 @@ namespace ToWriteList.Controllers
                 User user = await _context.Users
                     .Include(u => u.Role)
                     .FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
-                if(user != null)
+                if (user != null)
                 {
                     await Authenticate(user);
                     return Redirect("/Index/Menu");
@@ -81,6 +79,19 @@ namespace ToWriteList.Controllers
                 ModelState.AddModelError("", "Invalid login or password");
             }
             return View(model);
+        }
+
+        [Route("Account/LogOut")]
+        public async Task<IActionResult> LogOut()
+        {
+            if (ModelState.IsValid)
+            {
+
+                await HttpContext.SignOutAsync();
+                return Redirect("/Account/Login");
+
+            }
+            return View();
         }
 
         private async Task Authenticate(User user)
