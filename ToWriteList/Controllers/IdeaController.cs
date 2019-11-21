@@ -48,13 +48,13 @@ namespace ToWriteList.Controllers
         }
 
         [Route("Idea/GetRandomIdea")]
-        public IActionResult GetRandomIdea()
+        public string GetRandomIdea()
         {
             using (ToWriteDbContext dbContext = new ToWriteDbContext())
             {
                 Random random = new Random();
                 var randomIdea = dbContext.Ideas.Skip(random.Next(0, dbContext.Ideas.Count())).Take(1);
-                return Ok(randomIdea.First().IdeaBlock);
+                return randomIdea.First().IdeaBlock;
             }          
         }
 

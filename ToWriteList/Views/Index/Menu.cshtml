@@ -1,33 +1,25 @@
 ﻿@{
     ViewData["Title"] = "Write To Write";
 }
+  
 
-   
-<p>
-    Hello, world!
-    1. Записать идею
-    2. Достать идею
-    3. Записать текст
-    4. Залогиниться
-</p>
-
-<form>
+<div>
     <p><b>Введите идею</b></p>
     <p><textarea rows="3" cols="45" name="idea" id="insertedIdea"></textarea></p>
     <p><input type="submit" onclick="saveIdea()" value="Отправить"></p>
-</form>
+</div>
 
-<form>
+<div>
     <p><b>Достать сохранённую идею</b></p>
-    <p><textarea rows="10" cols="45" name="text" readonly disabled id="randomIdea"></textarea></p>
+    <p><textarea rows="10" cols="45" id="randomIdea"></textarea></p>
     <p><input type="submit" onclick="getIdea()" value="Отправить"></p>
-</form>
+</div>
 
-<form>
+<div>
     <p><b>Начать историю</b></p>
-    <p><textarea rows="10" cols="45" name="text" id="textBlock"></textarea></p>
+    <p><textarea rows="10" cols="45" id="textBlock"></textarea></p>
     <p><input type="submit" onclick="saveText()" value="Отправить"></p>
-</form>
+</div>
 
 <script>
 
@@ -57,14 +49,15 @@
 
     function getIdea() {
         var url = "https://localhost:44394/Idea/GetRandomIdea";
-        var method = 'GET';
+        var method = 'POST';
         var shouldBeAsync = false;
         var oXHR = new XMLHttpRequest();
 
         function appendFull() {
             if (oXHR.status == 200) {
-                var result = JSON.parse(oXHR.responseText);
-                document.getElementById("randomIdea").style.display = result;
+                console.log(oXHR.responseText);
+                var result = oXHR.responseText;
+                document.getElementById("randomIdea").innerText = result;               
             }
         }
 
