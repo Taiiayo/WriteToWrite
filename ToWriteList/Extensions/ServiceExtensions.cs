@@ -1,8 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Entities.Db;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ToWriteList.Extensions
 {
@@ -16,6 +15,12 @@ namespace ToWriteList.Extensions
                        .AllowAnyMethod()
                        .AllowAnyHeader();
             }));
+        }
+
+        public static void ConfigureNpgSqlContext(this IServiceCollection services, IConfiguration config)
+        {
+            var connectionString = config["ConnectionStrings:DefaultConnection"];
+            services.AddDbContext<ToWriteDbContext>(o => o.UseNpgsql(connectionString));
         }
     }
 }
