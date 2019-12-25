@@ -1,5 +1,4 @@
 ﻿using Entities.Db;
-using Texts;
 using Texts.Models;
 
 namespace Repository.Models

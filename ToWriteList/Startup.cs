@@ -24,6 +24,7 @@ namespace ToWriteList
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureNpgSqlContext(Configuration);
+            services.ConfigureRepositoryWrapper();
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
