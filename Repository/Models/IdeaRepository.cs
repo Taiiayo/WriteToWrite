@@ -1,4 +1,5 @@
 ﻿using Entities.Db;
+using System.Linq;
 using Texts.Models;
 
 namespace Repository.Models
@@ -8,6 +9,11 @@ namespace Repository.Models
         public IdeaRepository(ToWriteDbContext toWriteDbContext) : base(toWriteDbContext)
         {
 
+        }
+
+        public int Count<T>()
+        {
+            return ToWriteDbContext.Ideas.Count();
         }
     }
 }

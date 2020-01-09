@@ -1,15 +1,21 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Entities.Db;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using ToWriteList.Context;
+using Texts;
 
 namespace ToWriteList.Controllers
 {
     [EnableCors("MyPolicy")]
     public class IdeaController : Controller
     {
+        private IRepositoryWrapper _repoWrapper;
+
+        public IdeaController(IRepositoryWrapper repoWrapper)
+        {
+            _repoWrapper = repoWrapper;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -18,44 +24,69 @@ namespace ToWriteList.Controllers
         [Route("Idea/SaveIdea")]
         public IActionResult SaveIdea([FromQuery] string ideaText)
         {
-            using (ToWriteDbContext dbContext = new ToWriteDbContext())
+            //using (ToWriteDbContext dbContext = new ToWriteDbContext())
+            //{
+            //    Idea ideaToSave = new Idea()
+            //    {
+            //        IdeaBlock = ideaText,
+            //        User = dbContext.Users.First(u => u.Email == HttpContext.User.Identity.Name)
+            //    };
+            //    dbContext.Add(ideaToSave);
+            //    dbContext.SaveChanges();
+            //}
+
+
+            Idea ideaToSave = new Idea()
             {
-                Idea ideaToSave = new Idea()
-                {
-                    IdeaBlock = ideaText,
-                    User = dbContext.Users.First(u => u.Email == HttpContext.User.Identity.Name)
-                };
-                dbContext.Add(ideaToSave);
-                dbContext.SaveChanges();
-            }
-                return Ok();
+                IdeaBlock = ideaText,
+                User = _repoWrapper.User.FindByCondition(u => u.Email == HttpContext.User.Identity.Name).FirstOrDefault()
+            };
+            _repoWrapper.Idea.Create(ideaToSave);
+            _repoWrapper.Save();
+
+            return Ok();
         }
 
         [Route("Idea/SaveText")]
         public IActionResult SaveText([FromQuery] string text)
         {
-            using (ToWriteDbContext dbContext = new ToWriteDbContext())
+            //using (ToWriteDbContext dbContext = new ToWriteDbContext())
+            //{
+            //    Text textToSave = new Text()
+            //    {
+            //        TextBlock = text,
+            //        User = dbContext.Users.First(u => u.Email == HttpContext.User.Identity.Name)
+            //    };
+            //    dbContext.Add(textToSave);
+            //    dbContext.SaveChanges();
+            //}
+
+
+            Text textToSave = new Text()
             {
-                Text textToSave = new Text()
-                {
-                    TextBlock = text,
-                    User = dbContext.Users.First(u => u.Email == HttpContext.User.Identity.Name)
-                };
-                dbContext.Add(textToSave);
-                dbContext.SaveChanges();
-            }
+                TextBlock = text,
+                User = _repoWrapper.User.FindByCondition(u => u.Email == HttpContext.User.Identity.Name).FirstOrDefault()
+            };
+            _repoWrapper.Text.Create(textToSave);
+            _repoWrapper.Save();
+
+
             return Ok();
         }
 
         [Route("Idea/GetRandomIdea")]
         public string GetRandomIdea()
         {
-            using (ToWriteDbContext dbContext = new ToWriteDbContext())
-            {
-                Random random = new Random();
-                var randomIdea = dbContext.Ideas.Skip(random.Next(0, dbContext.Ideas.Count())).Take(1);
-                return randomIdea.First().IdeaBlock;
-            }          
+            //using (ToWriteDbContext dbContext = new ToWriteDbContext())
+            //{
+            //    Random random = new Random();
+            //    var randomIdea = dbContext.Ideas.Skip(random.Next(0, dbContext.Ideas.Count())).Take(1);
+            //    return randomIdea.First().IdeaBlock;
+            //}
+
+            Idea randomIdea = _repoWrapper.Idea.TakeRandom();
+            return randomIdea.IdeaBlock;
+
         }
 
         [Route("Idea/Save")]
