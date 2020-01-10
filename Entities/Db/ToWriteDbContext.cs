@@ -1,16 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Entities.Db
 {
     public class ToWriteDbContext : DbContext
     {
-        //private JToken Config => JToken.Parse(File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "appsettings.json")));
-        //private string ConnectionString => Config["ConnectionStrings"]["DefaultConnection"].ToString();
+        private JToken Config => JToken.Parse(File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "appsettings.json")));
+        private string ConnectionString => Config["ConnectionStrings"]["DefaultConnection"].ToString();
         public ToWriteDbContext()
         {
         }
@@ -26,13 +24,13 @@ namespace Entities.Db
         public DbSet<Text> Texts { get; set; }
         public DbSet<User> Users { get; set; }
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    if (!optionsBuilder.IsConfigured)
-        //    {
-        //        optionsBuilder.UseNpgsql(ConnectionString);
-        //    }
-        //}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseNpgsql(ConnectionString);
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

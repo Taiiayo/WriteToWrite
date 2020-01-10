@@ -2,8 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Repository;
-using Texts;
 
 namespace ToWriteList.Extensions
 {
@@ -23,11 +21,6 @@ namespace ToWriteList.Extensions
         {
             var connectionString = config["ConnectionStrings:DefaultConnection"];
             services.AddDbContext<ToWriteDbContext>(o => o.UseNpgsql(connectionString));
-        }
-
-        public static void ConfigureRepositoryWrapper(this IServiceCollection services)
-        {
-            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
         }
     }
 }

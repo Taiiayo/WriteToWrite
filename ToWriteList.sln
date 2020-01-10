@@ -7,10 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToWriteList", "ToWriteList\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entities", "Entities\Entities.csproj", "{0E395FEF-D591-47C5-A667-B359D16E4E86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Texts", "Texts\Texts.csproj", "{918B4EBB-F848-4A7C-A234-30795731B61E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{53474436-69B3-4CBA-A6ED-2A157CDD97F0}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,14 +21,6 @@ Global
 		{0E395FEF-D591-47C5-A667-B359D16E4E86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E395FEF-D591-47C5-A667-B359D16E4E86}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E395FEF-D591-47C5-A667-B359D16E4E86}.Release|Any CPU.Build.0 = Release|Any CPU
-		{918B4EBB-F848-4A7C-A234-30795731B61E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{918B4EBB-F848-4A7C-A234-30795731B61E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{918B4EBB-F848-4A7C-A234-30795731B61E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{918B4EBB-F848-4A7C-A234-30795731B61E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{53474436-69B3-4CBA-A6ED-2A157CDD97F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{53474436-69B3-4CBA-A6ED-2A157CDD97F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{53474436-69B3-4CBA-A6ED-2A157CDD97F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{53474436-69B3-4CBA-A6ED-2A157CDD97F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

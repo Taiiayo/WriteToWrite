@@ -3,20 +3,12 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
-using Texts;
 
 namespace ToWriteList.Controllers
 {
     [EnableCors("MyPolicy")]
     public class IdeaController : Controller
     {
-        //private IRepositoryWrapper _repoWrapper;
-
-        //public IdeaController(IRepositoryWrapper repoWrapper)
-        //{
-        //    _repoWrapper = repoWrapper;
-        //}
-
         public IActionResult Index()
         {
             return View();
@@ -35,16 +27,6 @@ namespace ToWriteList.Controllers
                 dbContext.Add(ideaToSave);
                 dbContext.SaveChanges();
             }
-
-
-            //Idea ideaToSave = new Idea()
-            //{
-            //    IdeaBlock = ideaText,
-            //    User = _repoWrapper.User.FindByCondition(u => u.Email == HttpContext.User.Identity.Name).FirstOrDefault()
-            //};
-            //_repoWrapper.Idea.Create(ideaToSave);
-            //_repoWrapper.Save();
-
             return Ok();
         }
 
@@ -61,17 +43,6 @@ namespace ToWriteList.Controllers
                 dbContext.Add(textToSave);
                 dbContext.SaveChanges();
             }
-
-
-            //Text textToSave = new Text()
-            //{
-            //    TextBlock = text,
-            //    User = _repoWrapper.User.FindByCondition(u => u.Email == HttpContext.User.Identity.Name).FirstOrDefault()
-            //};
-            //_repoWrapper.Text.Create(textToSave);
-            //_repoWrapper.Save();
-
-
             return Ok();
         }
 
@@ -84,16 +55,12 @@ namespace ToWriteList.Controllers
                 var randomIdea = dbContext.Ideas.Skip(random.Next(0, dbContext.Ideas.Count())).Take(1);
                 return randomIdea.First().IdeaBlock;
             }
-
-            //Idea randomIdea = _repoWrapper.Idea.TakeRandom();
-            //return randomIdea.IdeaBlock;
-
         }
 
         [Route("Idea/Save")]
         public IActionResult Save()
         {
-            System.Console.WriteLine("ea");
+            Console.WriteLine("ea");
             return Ok();
         }
     }

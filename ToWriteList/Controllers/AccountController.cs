@@ -1,4 +1,5 @@
 ﻿using Entities.Db;
+using Entities.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Cors;
@@ -7,20 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Texts;
-using ToWriteList.Models;
 
 namespace ToWriteList.Controllers
 {
     [EnableCors("MyPolicy")]
     public class AccountController : Controller
     {
-        private ToWriteDbContext _context;
-        public AccountController(ToWriteDbContext context)
-        {
-            _context = context;
-        }
-
         [HttpGet]
         [Route("Account/Register")]
         public IActionResult Register()
@@ -35,19 +28,18 @@ namespace ToWriteList.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await _context.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
-                //var user = await _repoWrapper.User.FindByCondition(u => u.Email == model.Email).FirstOrDefaultAsync();
-                Role userRole = await _context.Roles.FirstOrDefaultAsync(r => r.Name == "user");
-                //var userRole = await _repoWrapper.Role.FindByCondition(r => r.Name == "user").FirstOrDefaultAsync();
-                if (userRole != null)
-                    user.Role = userRole;
+                using (ToWriteDbContext dbContext = new ToWriteDbContext())
+                {
+                    User user = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
+                    Role userRole = await dbContext.Roles.FirstOrDefaultAsync(r => r.Name == "user");
 
-                _context.Users.Add(user);
-                //_repoWrapper.User.Create(user);
-                await _context.SaveChangesAsync();
-                //_repoWrapper.Save();
+                    if (userRole != null)
+                        user.Role = userRole;
 
-                await Authenticate(user);
+                    dbContext.Users.Add(user);
+                    await dbContext.SaveChangesAsync();
+                    await Authenticate(user);
+                }
                 return Redirect("/Index/Menu");
 
             }
@@ -72,16 +64,17 @@ namespace ToWriteList.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await _context.Users
+                using (ToWriteDbContext dbContext = new ToWriteDbContext())
+                {
+                    User user = await dbContext.Users
                     .Include(u => u.Role)
                     .FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
-                //User user = await _repoWrapper.User
-                //    .Include<User>(u => u.Role)
-                //    .FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
-                if (user != null)
-                {
-                    await Authenticate(user);
-                    return Redirect("/Index/Menu");
+
+                    if (user != null)
+                    {
+                        await Authenticate(user);
+                        return Redirect("/Index/Menu");
+                    }
                 }
 
                 ModelState.AddModelError("", "Invalid login or password");
@@ -94,10 +87,8 @@ namespace ToWriteList.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 await HttpContext.SignOutAsync();
                 return Redirect("/Account/Login");
-
             }
             return View();
         }
