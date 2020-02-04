@@ -1,7 +1,12 @@
 ﻿@{
     ViewData["Title"] = "Write To Write";
-}
-  
+}     
+
+<div style="float:right">
+        <label class="logoutLblPos">
+            @Html.ActionLink("Log Off", "LogOut", "Account")
+        </label>
+</div>
 
 <div>
     <p><b>Введите идею</b></p>
