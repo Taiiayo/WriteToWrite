@@ -29,10 +29,12 @@
         var method = 'GET';
         var shouldBeAsync = false;
         var oXHR = new XMLHttpRequest();
-
+                
         oXHR.open(method, url, shouldBeAsync);
         oXHR.setRequestHeader("Content-Type", "application/json");
         oXHR.send();
+
+        oXHR.onreadystatechange = deleteText('insertedIdea', oXHR.status);
     }
 
     function saveText() {
@@ -41,10 +43,12 @@
         var method = 'GET';
         var shouldBeAsync = false;
         var oXHR = new XMLHttpRequest();
-
+                
         oXHR.open(method, url, shouldBeAsync);
         oXHR.setRequestHeader("Content-Type", "application/json");
         oXHR.send();
+
+        oXHR.onreadystatechange = deleteText('textBlock', oXHR.status);
     }
 
     function getIdea() {
@@ -61,11 +65,18 @@
             }
         }
 
-        oXHR.onreadystatechange = appendFull;
         oXHR.open(method, url, shouldBeAsync);
         oXHR.setRequestHeader("Content-Type", "application/json");
         oXHR.send();
+
+        oXHR.onreadystatechange = appendFull;
     }
 
+    function deleteText(elementToDelete, status){
+            if (status == 200) {
+                document.getElementById(elementToDelete).value
+                    = null; 
+            }
+    }
 
 </script>
